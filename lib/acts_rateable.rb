@@ -1,0 +1,5 @@
+require 'rubygems'
+require 'acts_rateable/version'
+require 'acts_rateable/acts_rateable'
+require 'acts_rateable/rate.rb'
+require 'acts_rateable/rating.rb'
