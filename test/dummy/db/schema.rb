@@ -11,19 +11,9 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130520033341) do
+ActiveRecord::Schema.define(:version => 20130520163820) do
 
-  create_table "bayesian_estimates", :force => true do |t|
-    t.integer  "resource_id",                    :null => false
-    t.string   "resource_type",                  :null => false
-    t.decimal  "estimate",      :default => 0.0
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
-  end
-
-  add_index "bayesian_estimates", ["resource_id", "resource_type"], :name => "index_bayesian_estimates_on_resource_id_and_resource_type"
-
-  create_table "bayesian_ratings", :force => true do |t|
+  create_table "ar_rates", :force => true do |t|
     t.integer  "resource_id",                  :null => false
     t.string   "resource_type",                :null => false
     t.integer  "author_id",                    :null => false
@@ -33,8 +23,21 @@ ActiveRecord::Schema.define(:version => 20130520033341) do
     t.datetime "updated_at",                   :null => false
   end
 
-  add_index "bayesian_ratings", ["author_id", "author_type"], :name => "index_bayesian_ratings_on_author_id_and_author_type"
-  add_index "bayesian_ratings", ["resource_id", "resource_type"], :name => "index_bayesian_ratings_on_resource_id_and_resource_type"
+  add_index "ar_rates", ["author_id", "author_type"], :name => "index_ar_rates_on_author_id_and_author_type"
+  add_index "ar_rates", ["resource_id", "resource_type"], :name => "index_ar_rates_on_resource_id_and_resource_type"
+
+  create_table "ar_ratings", :force => true do |t|
+    t.integer  "resource_id",                    :null => false
+    t.string   "resource_type",                  :null => false
+    t.integer  "total",         :default => 0
+    t.integer  "sum",           :default => 0
+    t.decimal  "average",       :default => 0.0
+    t.decimal  "estimate",      :default => 0.0
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+  end
+
+  add_index "ar_ratings", ["resource_id", "resource_type"], :name => "index_ar_ratings_on_resource_id_and_resource_type"
 
   create_table "posts", :force => true do |t|
     t.string   "name"

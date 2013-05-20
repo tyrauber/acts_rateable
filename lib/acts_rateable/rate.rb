@@ -17,7 +17,7 @@ module ActsRateable
   
     def self.rated?(resource, author)
       rate = where({
-        author_type: self.class.name, author_id: self.id, 
+        author_type: author.class.name, author_id: author.id, 
         resource_type: resource.class.name, resource_id: resource.id
       })
       return rate if rate
