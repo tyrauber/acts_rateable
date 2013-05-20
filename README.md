@@ -21,10 +21,10 @@ weighted rating (WR) = (v ÷ (v+m)) × R + (m ÷ (v+m)) × C
 
 Where:
 
-R = average for the movie (mean) = (Rating)
-v = number of votes for the movie = (votes)
-m = minimum votes required to be listed in the Top 250
-C = the mean vote across the whole report (currently 7.1)
+  R = average for the movie (mean) = (Rating)
+  v = number of votes for the movie = (votes)
+  m = minimum votes required to be listed in the Top 250
+  C = the mean vote across the whole report (currently 7.1)
 
 ## Implementation
 
@@ -128,11 +128,13 @@ Will return all posts ordered by estimate in descending order.
 ## Support
 
 For issues, problems or bugs, please post an issue, here:
+  
+  https://github.com/tyrauber/acts_rateable/issues
 
 ## Future Development
 
 For future development:
 
-1) fork the repository
-2) extend the functionality
-3) issue pull request
+  1) fork the repository
+  2) extend the functionality
+  3) issue pull request
