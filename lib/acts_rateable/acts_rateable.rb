@@ -16,9 +16,13 @@ module ActsRateable
       # => column: total, average, sum, estimate
       # => direction: DESC, ASC
       
-      scope :order_by, lambda { | column='estimate', direction="DESC" | includes(:ratings).order("ar_ratings.#{column.downcase} #{direction.upcase}") }
+      scope :order_by, lambda { | column='estimate', direction="DESC" |
+         joins("LEFT OUTER JOIN ar_ratings ON ar_ratings.resource_id = #{self.table_name}.id AND ar_ratings.resource_type = '#{self.name}'").
+         select("#{self.table_name}.*, COALESCE(ar_ratings.total, 0) as total, COALESCE(ar_ratings.average, 0) as average, COALESCE(ar_ratings.sum, 0) as sum, COALESCE(ar_ratings.estimate, 0) as estimate").
+         order("#{column.downcase} #{direction.upcase}")
+      }
       
-      before_save do
+      after_save do
          ActsRateable::Rating.create(self) if !rates.empty?
       end
       
@@ -32,11 +36,11 @@ module ActsRateable
     #   Returns the resource rating
     #   column: total, sum, average and estimate
     def rating(column='estimate')
-      ActsRateable::Rating.data_for(self)[column]
+      ratings.nil? ? nil : ratings[column]
     end
-    
-    def variation(author)
-      (rated_by?(author).value/ActsRateable::Rating.data_for(self)['estimate'])
+
+    def variation( author )
+      rated_by?(author) ? (rated_by?(author).value/self.rating) : nil
     end
     
     # Checks wheter a resource has been rated by a user. Returns the rating if true, otherwise returns false.

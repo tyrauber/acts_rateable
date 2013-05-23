@@ -4,7 +4,7 @@ class ActsRateableMigration < ActiveRecord::Migration
     create_table :ar_rates do |t|
       t.references :resource, :polymorphic => true, :null => false
       t.references :author, :polymorphic => true, :null => false
-      t.integer :value, :default => 0
+      t.decimal :value, :default => 0
       t.timestamps
     end
     add_index :ar_rates, [:resource_id, :resource_type]
