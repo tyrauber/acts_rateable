@@ -13,6 +13,8 @@ module ActsRateable
 
   	@@global_ratings = {} 
 
+  	before_save :update_ratings
+
     def self.set_totals(resource)
      sql = "SELECT COUNT(*) total_ratings, SUM(value) rating_sum, AVG(value) rating_avg, "+
             "(SELECT COUNT(DISTINCT resource_id) FROM ar_rates WHERE resource_type = '#{resource.class.name}') rated_count, "+
@@ -40,15 +42,16 @@ module ActsRateable
       return    { 'global' => global, 'local' => local.merge!({ 'estimate' => estimate }) }
     end
     
-    def self.create(resource)
-      record          = where({ resource_type: resource.class.name, resource_id: resource.id }).first_or_initialize
-      result          = data_for(resource)
-      record.total    = result['local']['total_ratings']
-      record.average  = result['local']['rating_avg']
-      record.sum      = result['local']['rating_sum']
-      record.estimate = result['local']['estimate']
-      if record.save
-        set_totals(resource) # Reset global values
+    protected
+
+    def update_ratings
+      if !resource.rates.empty?
+        result   = self.class.data_for(resource)
+        self.total    = result['local']['total_ratings']
+        self.average  = result['local']['rating_avg']
+        self.sum      = result['local']['rating_sum']
+        self.estimate = result['local']['estimate']
+        self.class.set_totals(resource) # Reset global values
       end
     end
   end

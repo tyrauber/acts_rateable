@@ -74,13 +74,12 @@ The rate will be returned in the user has rated the resource, otherwise false wi
 
 ### resource.rating
 
-To get the current rating for a resource:
+To get the rating for a resource:
 
 		post.rating
 
-By default, the bayesian estimate for that rating will be returned.
 
-### resource.rating( column )
+### resource.rating[column]
 
 Four types of data are cached for every resource rated: 
 
@@ -115,13 +114,13 @@ To find out how close or far off the author was in their rating from the resourc
 
 Will return a percentage of deviation.
 
-### order_by(column, direction)
+### order_by_rating(column, direction)
 
 Any rateable resource may be ordered by any of the four cached data points, in either direction: DESC, ASC.
 
 For example:
 
-	Post.order_by(:estimate, 'DESC')
+	Post.order_by_rating(:estimate, 'DESC')
 
 Will return all posts ordered by estimate in descending order.
 

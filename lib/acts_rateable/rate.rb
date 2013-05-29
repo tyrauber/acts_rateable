@@ -40,7 +40,7 @@ module ActsRateable
     private
   
     def generate_estimate
-      ActsRateable::Rating.create(resource)
+      ActsRateable::Rating.create({resource_id: resource.id, resource_type: resource.class.name})
     end
   end
 end
