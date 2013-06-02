@@ -1,49 +1,49 @@
 module ActsRateable
-  class Rating  < ActsRateable::ArRating
+  class Count < ActsRateable::ArRating
 
     belongs_to :resource, polymorphic: true
-    #has_many :rates, through: :ratings, as: :resource
-    
+   # has_many :rates, through: :counts, as: :author
+
   	attr_accessible :resource_id, :resource_type, :total, :sum, :average, :estimate, :type
-  
+
     validates :resource, :total, :sum, :average, :estimate, presence: true
     validates_numericality_of :total, :sum, :average, :estimate
 
-  	@@global_ratings = {} 
+  	@@global_counts = {} 
 
   	before_save :update_ratings
 
-    def self.set_totals(resource)
+    def self.set_totals(author)
      sql = "SELECT COUNT(*) total_ratings, SUM(value) rating_sum, AVG(value) rating_avg, "+
-            "(SELECT COUNT(DISTINCT resource_id) FROM ar_rates WHERE resource_type = '#{resource.class.name}') rated_count, "+
-            "((SELECT COUNT(*) from ar_rates WHERE resource_type = '#{resource.class.name}') / (SELECT COUNT(DISTINCT resource_id) FROM ar_rates WHERE resource_type = '#{resource.class.name}')) avg_num_ratings "+
-            "FROM ar_rates WHERE resource_type = '#{resource.class.name}'"
-            @@global_ratings[resource.class.name] = ActsRateable::Rate.connection.execute(sql).first
+            "(SELECT COUNT(DISTINCT author_id) FROM ar_rates WHERE author_type = '#{author.class.name}') rated_count, "+
+            "((SELECT COUNT(*) from ar_rates WHERE author_type = '#{author.class.name}') / (SELECT COUNT(DISTINCT author_id) FROM ar_rates WHERE author_type = '#{author.class.name}')) avg_num_ratings "+
+            "FROM ar_rates WHERE author_type = '#{author.class.name}'"
+            @@global_counts[author.class.name] = ActsRateable::Rate.connection.execute(sql).first
     end
 
   	#  RETURNS = { "total_ratings"=>"", "rating_sum"=>"", "rating_avg"=>"", "rated_count"=>"", "avg_num_ratings"=>"" }
-    def self.get_totals(resource)
-      @@global_ratings[resource.class.name] ||= set_totals(resource)
+    def self.get_totals(author)
+      @@global_counts[author.class.name] ||= set_totals(author)
     end
 
     # RETURNS = {"total_ratings"=>"", "rating_sum"=>"", "rating_avg"=>""}
-    def self.values_for(resource)    
+    def self.values_for(author)    
       sql =   "SELECT COUNT(*) total_ratings, COALESCE(SUM(value),0) rating_sum, COALESCE(AVG(value),0) rating_avg "+
-              "FROM ar_rates WHERE resource_type = '#{resource.class.name}' and resource_id = '#{resource.id}'"
+              "FROM ar_rates WHERE author_type = '#{author.class.name}' and author_id = '#{author.id}'"
               ActsRateable::Rate.connection.execute(sql).first
     end
 
-    def self.data_for(resource)
-      local     = values_for(resource)
-      global    = get_totals(resource)
+    def self.data_for(author)
+      local     = values_for(author)
+      global    = get_totals(author)
       estimate  = (local['total_ratings'].to_f / (local['total_ratings'].to_f+global['avg_num_ratings'].to_f)) * local['rating_avg'].to_f + (global['avg_num_ratings'].to_f / (local['total_ratings'].to_f+global['avg_num_ratings'].to_f)) *global['rating_avg'].to_f
       return    { 'global' => global, 'local' => local.merge!({ 'estimate' => estimate }) }
     end
-    
+
     protected
 
     def update_ratings
-      if resource && !resource.rates.empty?
+      if resource && !resource.rated.empty?
         result   = self.class.data_for(resource)
         self.total    = result['local']['total_ratings']
         self.average  = result['local']['rating_avg']

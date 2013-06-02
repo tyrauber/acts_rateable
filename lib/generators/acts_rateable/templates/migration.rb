@@ -12,6 +12,7 @@ class ActsRateableMigration < ActiveRecord::Migration
     
     create_table :ar_ratings do |t|
       t.references :resource, :polymorphic => true, :null => false
+      t.string :type
       t.integer :total, :default => 0
       t.integer :sum, :default => 0
       t.decimal :average, :default => 0

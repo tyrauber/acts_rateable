@@ -40,7 +40,8 @@ module ActsRateable
     private
   
     def generate_estimate
-      ActsRateable::Rating.create({resource_id: resource.id, resource_type: resource.class.name})
+      ActsRateable::Rating.where({resource_id: self.resource_id, resource_type: self.resource_type}).first_or_initialize.save #if !rates.empty?
+      ActsRateable::Count.where({resource_id: self.author_id, resource_type: self.author_type}).first_or_initialize.save #if !rates.empty?
     end
   end
 end

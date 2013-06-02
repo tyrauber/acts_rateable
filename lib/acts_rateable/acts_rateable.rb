@@ -11,13 +11,19 @@ module ActsRateable
       has_many :rates, class_name: ActsRateable::Rate, as: :resource, dependent: :destroy
       has_many :rated, class_name: ActsRateable::Rate, as: :author, dependent: :destroy
       has_one :rating, class_name: ActsRateable::Rating, as: :resource, dependent: :destroy
+      has_one :count, class_name: ActsRateable::Count, as: :resource, dependent: :destroy
 
       scope :order_by_rating, lambda { | column='estimate', direction="DESC" |
         includes(:rating).group('ar_ratings.id').order("ar_ratings.#{column.downcase} #{direction.upcase}")
       }
       
+      scope :order_by_count, lambda { | column='estimate', direction="DESC" |
+        includes(:count).group('ar_ratings.id').order("ar_ratings.#{column.downcase} #{direction.upcase}")
+      }
+
       after_save do
-         ActsRateable::Rating.where({resource_id: self.id, resource_type: self.class.name}).first_or_create #if !rates.empty?
+         ActsRateable::Rating.where({resource_id: self.id, resource_type: self.class.name}).first_or_initialize.save #if !rates.empty?
+         ActsRateable::Count.where({resource_id: self.id, resource_type: self.class.name}).first_or_initialize.save #if !rates.empty?
       end
       
       include LocalInstanceMethods
