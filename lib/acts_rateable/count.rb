@@ -15,21 +15,21 @@ module ActsRateable
 
     def self.set_totals(author)
      sql = "SELECT COUNT(*) total_ratings, SUM(value) rating_sum, AVG(value) rating_avg, "+
-            "(SELECT COUNT(DISTINCT author_id) FROM ar_rates WHERE author_type = '#{author.class.name}') rated_count, "+
-            "((SELECT COUNT(*) from ar_rates WHERE author_type = '#{author.class.name}') / (SELECT COUNT(DISTINCT author_id) FROM ar_rates WHERE author_type = '#{author.class.name}')) avg_num_ratings "+
-            "FROM ar_rates WHERE author_type = '#{author.class.name}'"
-            @@global_counts[author.class.name] = ActsRateable::Rate.connection.execute(sql).first
+            "(SELECT COUNT(DISTINCT author_id) FROM ar_rates WHERE author_type = '#{author.class.base_class.name}') rated_count, "+
+            "((SELECT COUNT(*) from ar_rates WHERE author_type = '#{author.class.base_class.name}') / (SELECT COUNT(DISTINCT author_id) FROM ar_rates WHERE author_type = '#{author.class.base_class.name}')) avg_num_ratings "+
+            "FROM ar_rates WHERE author_type = '#{author.class.base_class.name}'"
+            @@global_counts[author.class.base_class.name] = ActsRateable::Rate.connection.execute(sql).first
     end
 
   	#  RETURNS = { "total_ratings"=>"", "rating_sum"=>"", "rating_avg"=>"", "rated_count"=>"", "avg_num_ratings"=>"" }
     def self.get_totals(author)
-      @@global_counts[author.class.name] ||= set_totals(author)
+      @@global_counts[author.class.base_class.name] ||= set_totals(author)
     end
 
     # RETURNS = {"total_ratings"=>"", "rating_sum"=>"", "rating_avg"=>""}
     def self.values_for(author)    
       sql =   "SELECT COUNT(*) total_ratings, COALESCE(SUM(value),0) rating_sum, COALESCE(AVG(value),0) rating_avg "+
-              "FROM ar_rates WHERE author_type = '#{author.class.name}' and author_id = '#{author.id}'"
+              "FROM ar_rates WHERE author_type = '#{author.class.base_class.name}' and author_id = '#{author.id}'"
               ActsRateable::Rate.connection.execute(sql).first
     end
 
