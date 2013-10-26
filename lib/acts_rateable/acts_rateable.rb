@@ -21,7 +21,7 @@ module ActsRateable
         includes(:count).group('ar_ratings.id').order("ar_ratings.#{column.downcase} #{direction.upcase}")
       }
 
-      after_save do
+      after_create do
          ActsRateable::Rating.where({resource_id: self.id, resource_type: self.class.base_class.name}).first_or_initialize.save #if !rates.empty?
          ActsRateable::Count.where({resource_id: self.id, resource_type: self.class.base_class.name}).first_or_initialize.save #if !rates.empty?
       end
