@@ -7,11 +7,11 @@ module ActsRateable
   module ClassMethods
     
     def acts_rateable(options = {})
-      
-      has_many :rates, class_name: ActsRateable::Rate, foreign_key: :resource_id, conditions: { resource_type: self.base_class.name }, dependent: :destroy
-      has_many :rated, class_name: ActsRateable::Rate, foreign_key: :author_id, conditions: { author_type: self.base_class.name }, dependent: :destroy
-      has_one :rating, class_name: ActsRateable::Rating, foreign_key: :resource_id, conditions: { resource_type: self.base_class.name }, dependent: :destroy
-      has_one :count, class_name: ActsRateable::Count, foreign_key: :resource_id, conditions: { resource_type: self.base_class.name }, dependent: :destroy
+
+      has_many :rates, -> (obj=self) { where(resource_type: obj.class.base_class.name) }, class_name: ActsRateable::Rate, foreign_key: :resource_id, dependent: :destroy
+      has_many :rated, -> (obj=self) { where(author_type: obj.class.base_class.name) }, class_name: ActsRateable::Rate, foreign_key: :author_id, dependent: :destroy
+      has_one :rating, -> (obj=self) { where(resource_type: obj.class.base_class.name) }, class_name: ActsRateable::Rating, foreign_key: :resource_id, dependent: :destroy
+      has_one :count, -> (obj=self) { where(resource_type: obj.class.base_class.name) }, class_name: ActsRateable::Count, foreign_key: :resource_id, dependent: :destroy
 
       scope :order_by_rating, lambda { | column='estimate', direction="DESC" |
         includes(:rating).group('ar_ratings.id').order("ar_ratings.#{column.downcase} #{direction.upcase}")
@@ -20,7 +20,6 @@ module ActsRateable
       scope :order_by_count, lambda { | column='estimate', direction="DESC" |
         includes(:count).group('ar_ratings.id').order("ar_ratings.#{column.downcase} #{direction.upcase}")
       }
-
       after_create do
          ActsRateable::Rating.where({resource_id: self.id, resource_type: self.class.base_class.name}).first_or_initialize.save #if !rates.empty?
          ActsRateable::Count.where({resource_id: self.id, resource_type: self.class.base_class.name}).first_or_initialize.save #if !rates.empty?

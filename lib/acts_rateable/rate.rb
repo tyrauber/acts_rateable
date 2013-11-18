@@ -10,8 +10,6 @@ module ActsRateable
   
     validates_numericality_of :value, :greater_than_or_equal_to => 1, :less_than_or_equal_to => 100
   	validates_uniqueness_of :author_id, :scope => [:author_type, :resource_id, :resource_type]
-	
-  	attr_accessible :resource_id, :resource_type, :author_type, :author_id, :value
   
     after_save :generate_estimate
   

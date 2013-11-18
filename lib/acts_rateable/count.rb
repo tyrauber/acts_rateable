@@ -2,9 +2,6 @@ module ActsRateable
   class Count < ActsRateable::ArRating
 
     belongs_to :resource, polymorphic: true
-   # has_many :rates, through: :counts, as: :author
-
-  	attr_accessible :resource_id, :resource_type, :total, :sum, :average, :estimate, :type
 
     validates :resource, :total, :sum, :average, :estimate, presence: true
     validates_numericality_of :total, :sum, :average, :estimate
