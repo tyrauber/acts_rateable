@@ -604,3 +604,101 @@ Connecting to database specified by database.yml
   [1m[36m (0.7ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20130520163820')[0m
   [1m[35m (0.6ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20130520024319')
   [1m[36m (0.7ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20130520024332')[0m
+  [1m[36m (0.2ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (7.4ms)[0m  INSERT INTO "posts" ("created_at", "name", "updated_at") VALUES (?, ?, ?)  [["created_at", Sat, 26 Apr 2014 22:45:29 UTC +00:00], ["name", "hello"], ["updated_at", Sat, 26 Apr 2014 22:45:29 UTC +00:00]]
+  [1m[36mActsRateable::Rating Load (10.8ms)[0m  [1mSELECT "ar_ratings".* FROM "ar_ratings" WHERE "ar_ratings"."resource_id" = 1 AND "ar_ratings"."resource_type" = 'Post' ORDER BY "ar_ratings"."id" ASC LIMIT 1[0m
+  [1m[35mPost Load (0.2ms)[0m  SELECT "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mActsRateable::Rate Exists (0.9ms)[0m  [1mSELECT 1 AS one FROM "ar_rates" WHERE "ar_rates"."resource_id" = ? AND "ar_rates"."resource_type" = 'ActiveRecord::Relation' LIMIT 1[0m  [["resource_id", 1]]
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "ar_ratings" ("created_at", "resource_id", "resource_type", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Sat, 26 Apr 2014 22:45:29 UTC +00:00], ["resource_id", 1], ["resource_type", "Post"], ["updated_at", Sat, 26 Apr 2014 22:45:29 UTC +00:00]]
+  [1m[36mActsRateable::Count Load (0.2ms)[0m  [1mSELECT "ar_ratings".* FROM "ar_ratings" WHERE "ar_ratings"."resource_id" = 1 AND "ar_ratings"."resource_type" = 'Post' ORDER BY "ar_ratings"."id" ASC LIMIT 1[0m
+  [1m[35mPost Load (0.1ms)[0m  SELECT "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36mActsRateable::Rate Exists (0.5ms)[0m  [1mSELECT 1 AS one FROM "ar_rates" WHERE "ar_rates"."author_id" = ? AND "ar_rates"."author_type" = 'ActiveRecord::Relation' LIMIT 1[0m  [["author_id", 1]]
+  [1m[35m (0.8ms)[0m  commit transaction
+  [1m[36mActsRateable::Rating Load (0.3ms)[0m  [1mSELECT "ar_ratings".* FROM "ar_ratings" WHERE "ar_ratings"."resource_id" = ? AND "ar_ratings"."resource_type" = 'ActiveRecord::Relation' LIMIT 1[0m  [["resource_id", 1]]
+  [1m[35m (0.2ms)[0m  SELECT COUNT(*) FROM "ar_ratings"
+  [1m[36mActsRateable::Rating Load (0.2ms)[0m  [1mSELECT "ar_ratings".* FROM "ar_ratings" ORDER BY "ar_ratings"."id" ASC LIMIT 1[0m
+  [1m[36mActsRateable::Rating Load (0.2ms)[0m  [1mSELECT "ar_ratings".* FROM "ar_ratings" ORDER BY "ar_ratings"."id" ASC LIMIT 1[0m
+DEPRECATION WARNING: The following options in your Post.has_many :rates declaration are deprecated: :conditions. Please use a scope block instead. For example, the following:
+
+    has_many :spam_comments, conditions: { spam: true }, class_name: 'Comment'
+
+should be rewritten as the following:
+
+    has_many :spam_comments, -> { where spam: true }, class_name: 'Comment'
+. (called from acts_rateable at /Users/tyrauber/Sites/BACKUP/acts_rateable/lib/acts_rateable/acts_rateable.rb:11)
+DEPRECATION WARNING: The following options in your Post.has_many :rated declaration are deprecated: :conditions. Please use a scope block instead. For example, the following:
+
+    has_many :spam_comments, conditions: { spam: true }, class_name: 'Comment'
+
+should be rewritten as the following:
+
+    has_many :spam_comments, -> { where spam: true }, class_name: 'Comment'
+. (called from acts_rateable at /Users/tyrauber/Sites/BACKUP/acts_rateable/lib/acts_rateable/acts_rateable.rb:12)
+DEPRECATION WARNING: The following options in your Post.has_one :rating declaration are deprecated: :conditions. Please use a scope block instead. For example, the following:
+
+    has_many :spam_comments, conditions: { spam: true }, class_name: 'Comment'
+
+should be rewritten as the following:
+
+    has_many :spam_comments, -> { where spam: true }, class_name: 'Comment'
+. (called from acts_rateable at /Users/tyrauber/Sites/BACKUP/acts_rateable/lib/acts_rateable/acts_rateable.rb:13)
+DEPRECATION WARNING: The following options in your Post.has_one :count declaration are deprecated: :conditions. Please use a scope block instead. For example, the following:
+
+    has_many :spam_comments, conditions: { spam: true }, class_name: 'Comment'
+
+should be rewritten as the following:
+
+    has_many :spam_comments, -> { where spam: true }, class_name: 'Comment'
+. (called from acts_rateable at /Users/tyrauber/Sites/BACKUP/acts_rateable/lib/acts_rateable/acts_rateable.rb:14)
+  [1m[35mPost Load (0.1ms)[0m  SELECT "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT 1
+  [1m[36mPost Load (0.3ms)[0m  [1mSELECT "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT 1[0m
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT 1[0m
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT 1[0m
+  [1m[35mActsRateable::Rating Load (24.8ms)[0m  SELECT "ar_ratings".* FROM "ar_ratings" WHERE "ar_ratings"."resource_id" = ? AND "ar_ratings"."resource_type" = 'ActsRateable::ArRating' LIMIT 1  [["resource_id", 1]]
+  [1m[36mActsRateable::Count Load (0.2ms)[0m  [1mSELECT "ar_ratings".* FROM "ar_ratings" WHERE "ar_ratings"."resource_id" = ? AND "ar_ratings"."resource_type" = 'ActsRateable::ArRating' LIMIT 1[0m  [["resource_id", 1]]
+  [1m[35mActsRateable::Rate Load (0.2ms)[0m  SELECT "ar_rates".* FROM "ar_rates" WHERE "ar_rates"."author_id" = ? AND "ar_rates"."author_type" = 'ActsRateable::Rate'  [["author_id", 1]]
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT 1[0m
+  [1m[35mActsRateable::Rate Load (34.9ms)[0m  SELECT "ar_rates".* FROM "ar_rates" WHERE "ar_rates"."resource_id" = ? AND "ar_rates"."resource_type" = 'ActiveRecord::Relation'  [["resource_id", 1]]
+DEPRECATION WARNING: The following options in your Post.has_many :rates declaration are deprecated: :conditions. Please use a scope block instead. For example, the following:
+
+    has_many :spam_comments, conditions: { spam: true }, class_name: 'Comment'
+
+should be rewritten as the following:
+
+    has_many :spam_comments, -> { where spam: true }, class_name: 'Comment'
+. (called from acts_rateable at /Users/tyrauber/Sites/BACKUP/acts_rateable/lib/acts_rateable/acts_rateable.rb:16)
+DEPRECATION WARNING: The following options in your Post.has_many :rated declaration are deprecated: :conditions. Please use a scope block instead. For example, the following:
+
+    has_many :spam_comments, conditions: { spam: true }, class_name: 'Comment'
+
+should be rewritten as the following:
+
+    has_many :spam_comments, -> { where spam: true }, class_name: 'Comment'
+. (called from acts_rateable at /Users/tyrauber/Sites/BACKUP/acts_rateable/lib/acts_rateable/acts_rateable.rb:17)
+DEPRECATION WARNING: The following options in your Post.has_one :rating declaration are deprecated: :conditions. Please use a scope block instead. For example, the following:
+
+    has_many :spam_comments, conditions: { spam: true }, class_name: 'Comment'
+
+should be rewritten as the following:
+
+    has_many :spam_comments, -> { where spam: true }, class_name: 'Comment'
+. (called from acts_rateable at /Users/tyrauber/Sites/BACKUP/acts_rateable/lib/acts_rateable/acts_rateable.rb:18)
+DEPRECATION WARNING: The following options in your Post.has_one :count declaration are deprecated: :conditions. Please use a scope block instead. For example, the following:
+
+    has_many :spam_comments, conditions: { spam: true }, class_name: 'Comment'
+
+should be rewritten as the following:
+
+    has_many :spam_comments, -> { where spam: true }, class_name: 'Comment'
+. (called from acts_rateable at /Users/tyrauber/Sites/BACKUP/acts_rateable/lib/acts_rateable/acts_rateable.rb:19)
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT 1[0m
+  [1m[35mActsRateable::Rate Load (31.6ms)[0m  SELECT "ar_rates".* FROM "ar_rates" WHERE "ar_rates"."resource_id" = ? AND "ar_rates"."author_type" = 'Class'  [["resource_id", 1]]
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT 1[0m
+  [1m[35mActsRateable::Rate Load (3.1ms)[0m  SELECT "ar_rates".* FROM "ar_rates" WHERE "ar_rates"."resource_id" = ? AND "ar_rates"."resource_type" = 'Post'  [["resource_id", 1]]
+  [1m[36mActsRateable::Rating Load (0.2ms)[0m  [1mSELECT "ar_ratings".* FROM "ar_ratings" WHERE "ar_ratings"."resource_id" = ? AND "ar_ratings"."resource_type" = 'Post' LIMIT 1[0m  [["resource_id", 1]]
+  [1m[36mPost Load (0.2ms)[0m  [1mSELECT "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT 1[0m
+  [1m[35mActsRateable::Rating Load (3.3ms)[0m  SELECT "ar_ratings".* FROM "ar_ratings" WHERE "ar_ratings"."resource_id" = ? AND "ar_ratings"."resource_type" = 'ActsRateable::Rating' LIMIT 1  [["resource_id", 1]]
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT 1[0m
+  [1m[35mActsRateable::Rating Load (3.3ms)[0m  SELECT "ar_ratings".* FROM "ar_ratings" WHERE "ar_ratings"."resource_id" = ? AND "ar_ratings"."resource_type" = 'hello' LIMIT 1  [["resource_id", 1]]
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT 1[0m
+  [1m[35mActsRateable::Rating Load (3.4ms)[0m  SELECT "ar_ratings".* FROM "ar_ratings" WHERE "ar_ratings"."resource_id" = ? AND "ar_ratings"."resource_type" = 'Post' LIMIT 1  [["resource_id", 1]]

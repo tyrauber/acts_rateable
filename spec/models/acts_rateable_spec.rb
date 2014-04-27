@@ -17,9 +17,9 @@ describe ActsRateable do
         post.rates.should_not be_empty
       end
       
-      it "should respond to ratings" do
-        post.should respond_to(:ratings)
-        post.ratings.should_not be_nil
+      it "should respond to rating" do
+        post.should respond_to(:rating)
+        post.rating.should_not be_nil
       end
     end
     
@@ -28,26 +28,14 @@ describe ActsRateable do
         user.should respond_to(:rated)
         user.rated.should_not be_empty
       end
-    end
-  end
-  
-  describe "scope" do
-    
-    let(:post) { FactoryGirl.create(:post) }
-    
-    before(:each){
-      rand(1..20).times do
-        FactoryGirl.create(:user).rate( post, rand(1..5) )
+      
+      it "should respond to count" do
+        post.should respond_to(:count)
+        post.count.should_not be_nil
       end
-    }
-    
-    it { Post.should respond_to(:order_by) }
-    
-    it "order_by should not be empty" do
-      Post.order_by(:estimate).should_not be_empty
     end
   end
-  
+
   describe "instance methods" do
 
     let(:post) { FactoryGirl.create(:post) }
