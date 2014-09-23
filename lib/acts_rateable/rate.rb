@@ -19,8 +19,8 @@ module ActsRateable
   
     def self.rated?(resource, author)
       rate = where({
-        author_type: author.class.name, author_id: author.id,
-        resource_type: resource.class.name, resource_id: resource.id
+        author_type: author.class.base_class.name, author_id: author.id,
+        resource_type: resource.class.base_class.name, resource_id: resource.id
       })
       return rate if rate
       return false
@@ -29,8 +29,8 @@ module ActsRateable
     def self.create(author, resource, value)
       return unless author && resource && value
 			atts = { 
-			  resource_type: resource.class.name, resource_id: resource.id,
-			  author_type: author.class.name, author_id: author.id,
+			  resource_type: resource.class.base_class.name, resource_id: resource.id,
+			  author_type: author.class.base_class.name, author_id: author.id,
 			  value: value
 			}
 			rate = where(atts.except(:value)).first_or_initialize(atts)

@@ -15,16 +15,16 @@ module ActsRateable
   	#  RETURNS = { "total_ratings"=>"", "rating_sum"=>"", "rating_avg"=>"", "rated_count"=>"", "avg_num_ratings"=>"" }
     def self.get_totals(resource)
       sql = "SELECT COUNT(*) total_ratings, SUM(value) rating_sum, AVG(value) rating_avg, "+
-            "(SELECT COUNT(DISTINCT resource_id) FROM ar_rates WHERE resource_type = '#{resource.class.name}') rated_count, "+
-            "((SELECT COUNT(*) from ar_rates WHERE resource_type = '#{resource.class.name}') / (SELECT COUNT(DISTINCT resource_id) FROM ar_rates WHERE resource_type = '#{resource.class.name}')) avg_num_ratings "+
-            "FROM ar_rates WHERE resource_type = '#{resource.class.name}'"
+            "(SELECT COUNT(DISTINCT resource_id) FROM ar_rates WHERE resource_type = '#{resource.class.base_class.name}') rated_count, "+
+            "((SELECT COUNT(*) from ar_rates WHERE resource_type = '#{resource.class.base_class.name}') / (SELECT COUNT(DISTINCT resource_id) FROM ar_rates WHERE resource_type = '#{resource.class.base_class.name}')) avg_num_ratings "+
+            "FROM ar_rates WHERE resource_type = '#{resource.class.base_class.name}'"
       ActsRateable::Rate.connection.execute(sql).first
     end
 
     # RETURNS = {"total_ratings"=>"", "rating_sum"=>"", "rating_avg"=>""}
     def self.values_for(resource)    
       sql =   "SELECT COUNT(*) total_ratings, COALESCE(SUM(value),0) rating_sum, COALESCE(AVG(value),0) rating_avg "+
-              "FROM ar_rates WHERE resource_type = '#{resource.class.name}' and resource_id = '#{resource.id}'"
+              "FROM ar_rates WHERE resource_type = '#{resource.class.base_class.name}' and resource_id = '#{resource.id}'"
       ActsRateable::Rate.connection.execute(sql).first
     end
 

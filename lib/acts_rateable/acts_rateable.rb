@@ -28,8 +28,8 @@ module ActsRateable
       }
 
       after_create do
-        rating = ActsRateable::Rating.where({resource_id: self.id, resource_type: self.class.name}).first_or_initialize.save
-        ActsRateable::Count.where({resource_id: self.id, resource_type: self.class.name}).first_or_initialize.save #if !rates.empty?
+        ActsRateable::Rating.where({resource_id: self.id, resource_type: self.class.base_class.name }).first_or_initialize.save
+        ActsRateable::Count.where({resource_id: self.id, resource_type: self.class.base_class.name }).first_or_initialize.save
       end
       
       include LocalInstanceMethods
