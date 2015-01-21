@@ -65,7 +65,7 @@ To test whether a resource has been rated an author:
 
 		post.rate?( author )
 
-The rate will be returned in the user has rated the resource, otherwise false will be returned.
+The rate will be returned if the user has rated the resource, otherwise false will be returned.
 
 ### author.has_rated?( resource )
 
