@@ -69,7 +69,7 @@ The rate will be returned if the user has rated the resource, otherwise an empty
 
 You may want to test it like this to get a true/false:
 
-    post.rated_by?( author).empty?
+    post.rated_by?( author ).empty?
 
 ### author.has_rated?( resource )
 
