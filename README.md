@@ -63,7 +63,7 @@ For example,
 
 To test whether a resource has been rated an author:
 
-		post.rate?( author )
+		post.rated_by?( author )
 
 The rate will be returned if the user has rated the resource, otherwise false will be returned.
 
