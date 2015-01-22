@@ -17,7 +17,7 @@ To determine this estimate, the gem calculates a bayesian estimate, as inspired 
 
 The formula for calculating the Top Rated 250 Titles gives a true Bayesian estimate:
 
-weighted rating (WR) = (v ÷ (v+m)) × R + (m ÷ (v+m)) × C 
+weighted rating (WR) = (v ÷ (v+m)) × R + (m ÷ (v+m)) × C
 
 Where:
 
@@ -39,9 +39,13 @@ Where:
 
 		gem 'acts_rateable'
 
-2) Run 'bundle install'.
+2) Run:
 
-3) Add 'acts_rateable' to the models you wish to have the ability to rate or be rated.
+		bundle install
+		rails generate acts_as_rateable
+		rake db:migrate
+
+3) Add `acts_rateable` to the models you wish to have the ability to rate or be rated.
 
 ## Usage
 
@@ -59,9 +63,13 @@ For example,
 
 To test whether a resource has been rated an author:
 
-		post.rate?( author )
+		post.rated_by?( author )
 
-The rate will be returned in the user has rated the resource, otherwise false will be returned.
+The rate will be returned if the user has rated the resource, otherwise an empty set of ratings is returned.
+
+You may want to test it like this to get a true/false:
+
+    post.rated_by?( author ).empty?
 
 ### author.has_rated?( resource )
 
@@ -81,7 +89,7 @@ To get the rating for a resource:
 
 ### resource.rating[column]
 
-Four types of data are cached for every resource rated: 
+Four types of data are cached for every resource rated:
 
 		:total  => rate count
 		:average => rate average
@@ -127,7 +135,7 @@ Will return all posts ordered by estimate in descending order.
 ## Support
 
 For issues, problems or bugs, please post an issue, here:
-  
+
   https://github.com/tyrauber/acts_rateable/issues
 
 ## Future Development
