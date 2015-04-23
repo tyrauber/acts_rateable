@@ -42,7 +42,7 @@ Where:
 2) Run:
 
 		bundle install
-		rails generate acts_as_rateable
+		rails generate acts_rateable
 		rake db:migrate
 
 3) Add `acts_rateable` to the models you wish to have the ability to rate or be rated.
